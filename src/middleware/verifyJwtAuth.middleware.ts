@@ -23,7 +23,6 @@ const verifyJwtAuth = (appConfig: AppConfig) => async (req: Request, res: Respon
         }})
 
         if (userMatch) {
-            console.log('user match', userMatch);
             res.locals.user = userMatch;
         } else {
             return res.status(401).json({ msg: 'Unauthorized' });

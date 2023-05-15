@@ -11,7 +11,6 @@ const createCoin = (appConfig: AppConfig) => async (req: Request, res: Response)
         const requestPayload = req.body;
         requestPayload.creatorId = Number(res.locals.user.id);
 
-        // console.log('>>>>>>>>>>>>>>>>>>>>>>>>',requestPayload)
         const parsedPayload = CoinCreateSchema.parse(requestPayload);
         const result = await prisma.coinInstance.create({ data: parsedPayload });
         res.json(result);

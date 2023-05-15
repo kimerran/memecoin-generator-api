@@ -15,12 +15,8 @@ const filter = {
     ]
 }
 
-console.log('>>', filter);
-
 async function main() {
     provider.on(filter, async (x: any) => {
-        console.log(x)
-
         try {
             let xy = iface.parseLog(x)
             // xy?.args
@@ -36,16 +32,12 @@ async function main() {
                         status: 'deploy_live'
                     }
                 })
-
                 console.log('update result', result);
             }
-            // await successHandler(args, x)
         } catch (error) {
-            console.log(error)
-            // await errorHandler(error)
+            console.error(error)
         }
     })
 }
 
-
-main()
+main();
