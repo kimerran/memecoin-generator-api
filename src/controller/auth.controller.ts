@@ -6,6 +6,8 @@ import { handleExpressError } from "../packages/error-handling/lib";
 import { AuthCreateTokenSchema } from "../validation/auth.schema";
 
 const createAuthToken = (appConfig: AppConfig) => async (req: Request, res: Response) => {
+    const { prisma } = appConfig;
+
     try {
         const parsedPayload = AuthCreateTokenSchema.parse(req.body);
         const { wallet, signature } = parsedPayload;
@@ -13,12 +15,25 @@ const createAuthToken = (appConfig: AppConfig) => async (req: Request, res: Resp
         const recoverd = verifyMessage(wallet, signature)
 
         if (recoverd === wallet) {
-            // not sure yet what to include in JWT
-            const payload = {
-                evw: recoverd
+            // verify if this exists in the DB
+            const match = await prisma.account.findFirst({
+                where: {
+                    walletAddress: recoverd
+                }
+            })
+
+            if (match) {
+                // not sure yet what to include in JWT
+                const payload = {
+                    evw: recoverd
+                }
+                const token = createToken(payload, appConfig);
+                res.json({ token });
+            } else {
+                return res.status(401).json({ msg: 'Unauthorized' })
             }
-            const token = createToken(payload, appConfig);
-            res.json({ token });
+
+
         } else {
             res.status(401).json({ msg: 'Signature verification failed' });
         }
