@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_ENV")
+}
+
+model Account {
+  id            Int            @id @default(autoincrement())
+  email         String
+  mobile        String?
+  twitter       String?
+  walletAddress String
+  CoinInstance  CoinInstance[]
+}
+
+model CoinInstance {
+  id        Int     @id @default(autoincrement())
+  creator   Account @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  imageUrl String?
+  name String
+  symbol String
+  status String
+}
