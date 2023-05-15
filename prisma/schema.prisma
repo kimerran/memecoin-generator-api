@@ -15,16 +15,18 @@ model Account {
   email         String
   mobile        String?
   twitter       String?
-  walletAddress String
+  walletAddress String         @unique()
   CoinInstance  CoinInstance[]
 }
 
 model CoinInstance {
-  id        Int     @id @default(autoincrement())
-  creator   Account @relation(fields: [creatorId], references: [id])
-  creatorId Int
-  imageUrl String?
-  name String
-  symbol String
-  status String
+  id              Int     @id @default(autoincrement())
+  creator         Account? @relation(fields: [creatorId], references: [id])
+  creatorId       Int
+  imageUrl        String?
+  name            String
+  symbol          String
+  status          String
+  contractAddress String?
+  supplyInEth     String
 }

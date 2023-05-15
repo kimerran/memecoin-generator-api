@@ -16,9 +16,15 @@ CREATE TABLE "CoinInstance" (
     "imageUrl" TEXT,
     "name" TEXT NOT NULL,
     "symbol" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
+    "contractAddress" TEXT,
+    "supplyInEth" TEXT NOT NULL,
 
     CONSTRAINT "CoinInstance_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Account_walletAddress_key" ON "Account"("walletAddress");
 
 -- AddForeignKey
 ALTER TABLE "CoinInstance" ADD CONSTRAINT "CoinInstance_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
