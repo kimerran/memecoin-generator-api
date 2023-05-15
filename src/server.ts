@@ -6,11 +6,15 @@ import { createCoin, deployCoinContract, updateCoin } from './controller/contrac
 import { verifyEvmSignature } from './middleware/verifyEvmSignature.middleware';
 import { createAuthToken } from './controller/auth.controller';
 import { verifyJwtAuth } from './middleware/verifyJwtAuth.middleware';
+import cors from 'cors';
 
 
 const initServer = (appConfig: AppConfig) => {
 
     const app = express();
+    app.use(cors({ origin: '*' }));
+    app.options('*', cors()) // include before other routes
+
     app.disable('x-powered-by')
     app.use(bodyParser.json())
 
