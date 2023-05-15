@@ -17,6 +17,14 @@ export type AppConfig = {
         secretAccessKey?: string,
     },
     prisma: PrismaClient,
+    evm: {
+        rpcUrl:  string,
+        deployerPrivateKey: string,
+    },
+    jwt: {
+        secret: string,
+        expireInSeconds: number
+    }
 }
 
 const getAppConfig = () : AppConfig => {
@@ -43,7 +51,15 @@ const getAppConfig = () : AppConfig => {
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         },
-        prisma
+        prisma,
+        evm: {
+            rpcUrl: process.env.MUMBAI_RPC_URL || '',
+            deployerPrivateKey: process.env.DEPLOYER_PRIVATE_KEY || '',
+        },
+        jwt: {
+            secret: process.env.JWT_SECRET || '',
+            expireInSeconds: Number(process.env.JWT_EXPIRE_SECONDS) || 999999
+        }
     }
 }
 
